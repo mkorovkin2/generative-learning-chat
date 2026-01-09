@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import HtmlPreview from './HtmlPreview';
 import './ChatMessage.css';
 
@@ -16,6 +17,8 @@ interface Props {
 }
 
 export default function ChatMessage({ message }: Props) {
+  const isAssistant = message.role === 'assistant';
+
   return (
     <div className={`message ${message.role}`}>
       <div className="message-avatar">
@@ -23,8 +26,17 @@ export default function ChatMessage({ message }: Props) {
       </div>
       <div className="message-content">
         <div className="message-text">
-          {message.content}
-          {message.isStreaming && !message.status && <span className="cursor">|</span>}
+          {isAssistant ? (
+            <div className="markdown-content">
+              <ReactMarkdown>{message.content}</ReactMarkdown>
+              {message.isStreaming && !message.status && <span className="cursor">|</span>}
+            </div>
+          ) : (
+            <>
+              {message.content}
+              {message.isStreaming && !message.status && <span className="cursor">|</span>}
+            </>
+          )}
         </div>
         {message.status && (
           <div className="message-status">
