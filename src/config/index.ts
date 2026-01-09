@@ -10,9 +10,9 @@ export const config = {
     port: parseInt(process.env.PORT || '3000', 10),
   },
   models: {
-    chat: 'gpt-4o',           // Main chat responses
-    evaluation: 'gpt-4o-mini', // Fast evaluation for UI decision
-    htmlGeneration: 'gpt-4o-mini', // HTML generation
+    chat: 'gpt-5.2',          // Main chat responses
+    evaluation: 'gpt-5-mini', // Fast evaluation for UI decision
+    htmlGeneration: 'gpt-5-mini', // HTML generation
   },
 } as const;
 

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ChatMessage from './components/ChatMessage';
 import ChatInput from './components/ChatInput';
+import SelectionPopup from './components/SelectionPopup';
+import BranchChat from './components/BranchChat';
 
 interface Message {
   id: string;
@@ -19,7 +21,19 @@ interface StreamChunk {
 export default function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [branchChat, setBranchChat] = useState<{ open: boolean; selectedText: string }>({
+    open: false,
+    selectedText: '',
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleAskQuestion = (selectedText: string) => {
+    setBranchChat({ open: true, selectedText });
+  };
+
+  const closeBranchChat = () => {
+    setBranchChat({ open: false, selectedText: '' });
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -164,6 +178,15 @@ export default function App() {
       </main>
 
       <ChatInput onSend={sendMessage} disabled={isLoading} />
+
+      <SelectionPopup onAskQuestion={handleAskQuestion} />
+
+      {branchChat.open && (
+        <BranchChat
+          selectedText={branchChat.selectedText}
+          onClose={closeBranchChat}
+        />
+      )}
     </div>
   );
 }
