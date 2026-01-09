@@ -52,6 +52,7 @@ export class ChatService {
       streamChat({
         model: config.models.chat,
         messages: apiMessages,
+        webSearch: true,
         onChunk: (content) => {
           assistantContent += content;
           onChunk({ type: 'content', data: content });

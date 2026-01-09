@@ -11,6 +11,7 @@ export interface StreamOptions {
   onChunk: (content: string) => void;
   onComplete: (fullContent: string) => void;
   onError: (error: Error) => void;
+  webSearch?: boolean;
 }
 
 /**
