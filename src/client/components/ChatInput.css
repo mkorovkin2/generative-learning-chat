@@ -1,0 +1,49 @@
+.chat-input {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  background: white;
+}
+
+.chat-input textarea {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  resize: none;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chat-input textarea:focus {
+  border-color: #2196f3;
+}
+
+.chat-input textarea:disabled {
+  background: #f5f5f5;
+}
+
+.chat-input button {
+  padding: 12px 24px;
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chat-input button:hover:not(:disabled) {
+  background: #1976d2;
+}
+
+.chat-input button:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}
