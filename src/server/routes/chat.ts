@@ -16,7 +16,7 @@ function getOrCreateSession(sessionId: string): ChatService {
 
 // SSE endpoint for chat
 router.post('/chat', async (req: Request, res: Response) => {
-  const { message, sessionId = 'default' } = req.body;
+  const { message, sessionId = 'default', skipUI = false } = req.body;
 
   if (!message || typeof message !== 'string') {
     res.status(400).json({ error: 'Message is required' });
@@ -35,7 +35,7 @@ router.post('/chat', async (req: Request, res: Response) => {
   try {
     await chatService.sendMessage(message, (chunk: StreamChunk) => {
       res.write(`data: ${JSON.stringify(chunk)}\n\n`);
-    });
+    }, { skipUI });
   } catch (error) {
     const errorChunk: StreamChunk = {
       type: 'error',

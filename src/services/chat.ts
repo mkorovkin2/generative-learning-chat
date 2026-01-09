@@ -25,7 +25,8 @@ export class ChatService {
 
   async sendMessage(
     userContent: string,
-    onChunk: (chunk: StreamChunk) => void
+    onChunk: (chunk: StreamChunk) => void,
+    options: { skipUI?: boolean } = {}
   ): Promise<ChatMessage> {
     // Add user message
     const userMessage: ChatMessage = {
@@ -70,24 +71,26 @@ export class ChatService {
       timestamp: Date.now(),
     };
 
-    // Evaluate if UI would help
-    onChunk({ type: 'status', data: 'Analyzing response...' });
-    const evaluation = await evaluateForUI(assistantContent);
+    // Evaluate if UI would help (skip for branch chats)
+    if (!options.skipUI) {
+      onChunk({ type: 'status', data: 'Analyzing response...' });
+      const evaluation = await evaluateForUI(assistantContent);
 
-    if (evaluation.shouldGenerateUI) {
-      try {
-        onChunk({ type: 'status', data: 'Creating interactive visualization...' });
-        const html = await generateHTML(
-          assistantContent,
-          evaluation.suggestedUIType
-        );
-        assistantMessage.htmlUI = html;
-        onChunk({ type: 'ui', data: html });
-      } catch (error) {
-        console.error('HTML generation failed:', error);
+      if (evaluation.shouldGenerateUI) {
+        try {
+          onChunk({ type: 'status', data: 'Creating interactive visualization...' });
+          const html = await generateHTML(
+            assistantContent,
+            evaluation.suggestedUIType
+          );
+          assistantMessage.htmlUI = html;
+          onChunk({ type: 'ui', data: html });
+        } catch (error) {
+          console.error('HTML generation failed:', error);
+        }
       }
+      onChunk({ type: 'status', data: '' }); // Clear status
     }
-    onChunk({ type: 'status', data: '' }); // Clear status
 
     // Signal completion
     onChunk({ type: 'done', data: '' });

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import './BranchChat.css';
 
 interface Message {
@@ -81,6 +82,7 @@ Please answer their question specifically about the highlighted text.`;
         body: JSON.stringify({
           message: fullMessage,
           sessionId: `branch-${Date.now()}`, // Separate session for branch
+          skipUI: true, // No visualizations in branch chat
         }),
       });
 
@@ -192,9 +194,20 @@ Please answer their question specifically about the highlighted text.`;
                     {message.role === 'user' ? 'You' : 'AI'}
                   </div>
                   <div className="message-content">
-                    {message.content}
-                    {message.isStreaming && !message.status && (
-                      <span className="cursor">|</span>
+                    {message.role === 'assistant' ? (
+                      <div className="markdown-content">
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
+                        {message.isStreaming && !message.status && (
+                          <span className="cursor">|</span>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        {message.content}
+                        {message.isStreaming && !message.status && (
+                          <span className="cursor">|</span>
+                        )}
+                      </>
                     )}
                   </div>
                   {message.status && (
