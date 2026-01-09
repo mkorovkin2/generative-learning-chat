@@ -81,7 +81,8 @@ export class ChatService {
           onChunk({ type: 'status', data: 'Creating interactive visualization...' });
           const html = await generateHTML(
             assistantContent,
-            evaluation.suggestedUIType
+            evaluation.suggestedUIType,
+            userContent
           );
           assistantMessage.htmlUI = html;
           onChunk({ type: 'ui', data: html });
