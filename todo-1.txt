@@ -1,0 +1,1 @@
+allow highlight details which allow to generate a simple visualization (predefined categories: explainer, interactive visualizer, flowchart) 
