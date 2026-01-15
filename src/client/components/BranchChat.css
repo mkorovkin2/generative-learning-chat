@@ -4,12 +4,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(16, 24, 40, 0.38);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1001;
-  animation: overlay-fade 0.2s ease;
+  animation: overlay-fade 0.2s var(--ease);
 }
 
 @keyframes overlay-fade {
@@ -21,13 +22,15 @@
   width: 90%;
   max-width: 500px;
   max-height: 70vh;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-strong);
+  backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: chat-slide 0.2s ease;
+  animation: chat-slide 0.22s var(--ease-out);
 }
 
 @keyframes chat-slide {
@@ -46,15 +49,17 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid #e0e0e0;
-  background: #fafafa;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
 }
 
 .branch-chat-header h3 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 .close-btn {
@@ -64,17 +69,31 @@
   width: 32px;
   height: 32px;
   padding: 0;
-  background: none;
-  border: none;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(16, 24, 40, 0.10);
+  border-radius: 10px;
   cursor: pointer;
-  color: #666;
-  transition: background 0.15s, color 0.15s;
+  color: rgba(27, 31, 42, 0.72);
+  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.10);
+  transition: transform 0.18s var(--ease-out), background-color 0.18s var(--ease),
+    color 0.18s var(--ease), box-shadow 0.18s var(--ease-out);
 }
 
 .close-btn:hover {
-  background: #f0f0f0;
-  color: #333;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(16, 24, 40, 0.14);
+}
+
+.close-btn:active {
+  transform: translateY(0px) scale(0.98);
+  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.10);
+}
+
+.close-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.10), var(--ring);
 }
 
 .branch-chat-messages {
@@ -82,31 +101,63 @@
   overflow-y: auto;
   padding: 16px;
   min-height: 200px;
+  scroll-behavior: smooth;
+}
+
+.branch-chat-messages::-webkit-scrollbar {
+  width: 10px;
+}
+
+.branch-chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(16, 24, 40, 0.16);
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.55);
+}
+
+.branch-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 24, 40, 0.22);
+}
+
+.branch-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .branch-message {
   margin-bottom: 16px;
+  animation: branch-message-enter 0.28s var(--ease-out) both;
+}
+
+@keyframes branch-message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .branch-message.context {
-  background: #fff8e1;
-  border: 1px solid #ffe082;
-  border-radius: 8px;
+  background: radial-gradient(120% 140% at 10% 0%, rgba(255, 255, 255, 0.8), rgba(255, 248, 225, 0.9));
+  border: 1px solid rgba(245, 124, 0, 0.18);
+  border-radius: 14px;
   padding: 12px;
   margin-bottom: 16px;
+  box-shadow: 0 16px 36px rgba(16, 24, 40, 0.10);
 }
 
 .context-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #f57c00;
+  color: rgba(245, 124, 0, 0.95);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 4px;
 }
 
 .context-text {
-  color: #333;
+  color: var(--text);
   font-style: italic;
   line-height: 1.5;
   word-break: break-word;
@@ -120,11 +171,11 @@
 }
 
 .branch-message.user .message-role {
-  color: #1976d2;
+  color: var(--primary-strong);
 }
 
 .branch-message.assistant .message-role {
-  color: #388e3c;
+  color: var(--success);
 }
 
 .branch-message .message-content {
@@ -132,6 +183,10 @@
   border-radius: 10px;
   line-height: 1.5;
   word-wrap: break-word;
+  border: 1px solid rgba(16, 24, 40, 0.10);
+  box-shadow: 0 16px 40px rgba(16, 24, 40, 0.10);
+  transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out),
+    border-color 0.18s var(--ease), background-color 0.18s var(--ease);
 }
 
 .branch-message.user .message-content {
@@ -139,13 +194,22 @@
 }
 
 .branch-message.user .message-content {
-  background: #2196f3;
+  background: linear-gradient(135deg, #2aa4ff 0%, var(--primary) 50%, var(--primary-strong) 100%);
   color: white;
+  border-color: rgba(33, 150, 243, 0.28);
+  box-shadow: 0 18px 44px rgba(33, 150, 243, 0.16), 0 4px 14px rgba(16, 24, 40, 0.10);
 }
 
 .branch-message.assistant .message-content {
-  background: #f5f5f5;
-  color: #333;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text);
+  backdrop-filter: blur(12px);
+}
+
+.branch-message .message-content:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 54px rgba(16, 24, 40, 0.12);
+  border-color: rgba(33, 150, 243, 0.18);
 }
 
 .branch-message .message-status {
@@ -154,24 +218,26 @@
   gap: 6px;
   margin-top: 6px;
   padding: 6px 10px;
-  background: #f0f7ff;
-  border-radius: 6px;
+  background: rgba(240, 247, 255, 0.82);
+  border: 1px solid rgba(33, 150, 243, 0.18);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
   font-size: 0.8rem;
-  color: #1976d2;
+  color: var(--primary-strong);
 }
 
 .branch-message .status-spinner {
   width: 12px;
   height: 12px;
-  border: 2px solid #bbdefb;
-  border-top-color: #1976d2;
+  border: 2px solid rgba(33, 150, 243, 0.25);
+  border-top-color: var(--primary-strong);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 .branch-message .cursor {
   animation: blink 1s infinite;
-  color: #2196f3;
+  color: var(--primary);
   font-weight: bold;
 }
 
@@ -188,50 +254,90 @@
   display: flex;
   gap: 10px;
   padding: 12px 16px;
-  border-top: 1px solid #e0e0e0;
-  background: #fafafa;
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
 }
 
 .branch-chat-input textarea {
   flex: 1;
   padding: 10px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid rgba(16, 24, 40, 0.14);
+  border-radius: 14px;
   resize: none;
   font-family: inherit;
   font-size: 0.9rem;
   line-height: 1.4;
   outline: none;
-  transition: border-color 0.2s;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 1px 0 rgba(16, 24, 40, 0.03);
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease-out),
+    transform 0.18s var(--ease-out), background-color 0.18s var(--ease);
 }
 
 .branch-chat-input textarea:focus {
-  border-color: #2196f3;
+  border-color: rgba(33, 150, 243, 0.65);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), var(--ring);
+  transform: translateY(-1px);
 }
 
 .branch-chat-input textarea:disabled {
-  background: #f5f5f5;
+  background: rgba(245, 245, 245, 0.9);
+  cursor: not-allowed;
 }
 
 .branch-chat-input button {
   padding: 10px 18px;
-  background: #2196f3;
+  background: linear-gradient(180deg, #2aa4ff 0%, var(--primary) 55%, var(--primary-strong) 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 14px;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(33, 150, 243, 0.22), 0 2px 8px rgba(16, 24, 40, 0.10);
+  transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out),
+    filter 0.18s var(--ease);
+}
+
+.branch-chat-input button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 60% at 25% 20%, rgba(255, 255, 255, 0.55), transparent 60%);
+  opacity: 0.9;
+  transition: opacity 0.18s var(--ease);
+  pointer-events: none;
 }
 
 .branch-chat-input button:hover:not(:disabled) {
-  background: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(33, 150, 243, 0.26), 0 4px 12px rgba(16, 24, 40, 0.12);
+  filter: saturate(1.05);
+}
+
+.branch-chat-input button:active:not(:disabled) {
+  transform: translateY(0px) scale(0.98);
+  box-shadow: 0 10px 20px rgba(33, 150, 243, 0.18), 0 2px 8px rgba(16, 24, 40, 0.10);
+}
+
+.branch-chat-input button:focus-visible {
+  outline: none;
+  box-shadow: 0 14px 28px rgba(33, 150, 243, 0.22), 0 2px 8px rgba(16, 24, 40, 0.10), var(--ring);
 }
 
 .branch-chat-input button:disabled {
-  background: #bdbdbd;
+  background: linear-gradient(180deg, rgba(189, 189, 189, 0.95), rgba(170, 170, 170, 0.95));
   cursor: not-allowed;
+  box-shadow: none;
+}
+
+.branch-chat-input button:disabled::after {
+  opacity: 0.35;
 }
 
 /* Markdown styling for assistant messages */

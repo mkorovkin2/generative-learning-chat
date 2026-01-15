@@ -11,25 +11,42 @@
   height: 32px;
   padding: 0;
 
-  background: #2196f3;
+  background: linear-gradient(180deg, #2aa4ff 0%, var(--primary) 55%, var(--primary-strong) 100%);
   color: white;
-  border: none;
+  border: 1px solid rgba(33, 150, 243, 0.35);
   border-radius: 50%;
   cursor: pointer;
 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.15s ease, background 0.15s ease;
+  box-shadow: 0 18px 44px rgba(33, 150, 243, 0.22), 0 6px 18px rgba(16, 24, 40, 0.16);
+  transition: transform 0.18s var(--ease-out), filter 0.18s var(--ease),
+    box-shadow 0.18s var(--ease-out);
+  overflow: hidden;
 
   animation: popup-appear 0.15s ease;
 }
 
+.selection-popup::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 70% at 25% 20%, rgba(255, 255, 255, 0.6), transparent 60%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
 .selection-popup:hover {
-  background: #1976d2;
   transform: translate(-50%, -100%) scale(1.1);
+  box-shadow: 0 22px 54px rgba(33, 150, 243, 0.26), 0 8px 22px rgba(16, 24, 40, 0.18);
+  filter: saturate(1.06);
 }
 
 .selection-popup:active {
   transform: translate(-50%, -100%) scale(0.95);
+}
+
+.selection-popup:focus-visible {
+  outline: none;
+  box-shadow: 0 18px 44px rgba(33, 150, 243, 0.22), 0 6px 18px rgba(16, 24, 40, 0.16), var(--ring);
 }
 
 @keyframes popup-appear {
